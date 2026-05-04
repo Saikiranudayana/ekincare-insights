@@ -1,4 +1,11 @@
-import { corsHeaders } from "https://esm.sh/@supabase/supabase-js@2.95.0/cors";
+// Inline CORS headers — allow any origin so Vercel + localhost both work.
+// Supabase Edge Functions call goes client → Supabase (same origin for anon key), so this is safe.
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-connection-api-key",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+};
 
 const SHEET_ID = "1lqSFO6I8jsKR6lDv-GfFB-ePEbPucNQVUaZM6iH-RNE";
 const GW = "https://connector-gateway.lovable.dev/google_sheets/v4";

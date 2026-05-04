@@ -1,16 +1,19 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
   BarChart3,
   AlertTriangle,
   Clock,
   Zap,
   Table2,
   Activity,
+  MessageSquare,
+  LayoutDashboard,
+  LogOut,
 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -22,7 +25,8 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Analytics", url: "/", icon: LayoutDashboard },
+  { title: "Reviews", url: "/reviews", icon: MessageSquare },
   { title: "Platform Analytics", url: "/platforms", icon: BarChart3 },
   { title: "Issue Analysis", url: "/issues", icon: AlertTriangle },
   { title: "SLA & Response", url: "/sla", icon: Clock },
@@ -34,6 +38,12 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("ek_auth");
+    navigate("/login");
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -74,6 +84,23 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      {/* Logout at the bottom */}
+      <SidebarFooter className="border-t p-2">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={handleLogout}
+              className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive"
+              tooltip="Logout"
+            >
+              <LogOut className="h-4 w-4" />
+              {!collapsed && <span>Logout</span>}
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
+
